@@ -30,22 +30,31 @@ namespace PlsqlDeveloperUtPlsqlPlugin
         private void InitializeComponent()
         {
             this.labelHello = new System.Windows.Forms.Label();
+            this.txtMessage = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // labelHello
             // 
             this.labelHello.AutoSize = true;
-            this.labelHello.Location = new System.Drawing.Point(235, 102);
+            this.labelHello.Location = new System.Drawing.Point(35, 34);
             this.labelHello.Name = "labelHello";
             this.labelHello.Size = new System.Drawing.Size(77, 13);
             this.labelHello.TabIndex = 0;
             this.labelHello.Text = "Hello utPLSQL";
+            // 
+            // txtMessage
+            // 
+            this.txtMessage.Location = new System.Drawing.Point(185, 26);
+            this.txtMessage.Name = "txtMessage";
+            this.txtMessage.Size = new System.Drawing.Size(603, 20);
+            this.txtMessage.TabIndex = 1;
             // 
             // About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.txtMessage);
             this.Controls.Add(this.labelHello);
             this.Name = "About";
             this.Text = "About";
@@ -57,5 +66,6 @@ namespace PlsqlDeveloperUtPlsqlPlugin
         #endregion
 
         private System.Windows.Forms.Label labelHello;
+        private System.Windows.Forms.TextBox txtMessage;
     }
 }

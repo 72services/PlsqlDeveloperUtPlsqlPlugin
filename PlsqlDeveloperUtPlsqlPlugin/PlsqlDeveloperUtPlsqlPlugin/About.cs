@@ -11,9 +11,10 @@ namespace PlsqlDeveloperUtPlsqlPlugin
             InitializeComponent();
         }
 
-        internal void Show(PlsqlDeveloperUtPlsqlPlugin plugin)
+        internal void Show(PlsqlDeveloperUtPlsqlPlugin plugin, string text)
         {
             this.plugin = plugin;
+            txtMessage.Text = text;
             Show();
         }
     }

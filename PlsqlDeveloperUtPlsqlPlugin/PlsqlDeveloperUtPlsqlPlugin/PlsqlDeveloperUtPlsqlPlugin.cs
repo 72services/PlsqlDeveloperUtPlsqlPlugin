@@ -1,28 +1,26 @@
 ﻿using System;
 using RGiesecke.DllExport;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace PlsqlDeveloperUtPlsqlPlugin
 {
-
-    //TODO: declare delegates for PL/SQL Developer callbacks, for instance
-    //delegate void IdeCreateWindow(int windowType, string text, [MarshalAs(UnmanagedType.Bool)] bool execute);
+    // /*FUNC: 69*/ void *(*IDE_CreatePopupItem)(int ID, int Index, char *Name, char *ObjectType);
+    delegate void IdeCreatePopupItem(int id, int index, string name, string objectType);
+    // /*FUNC: 74*/ int (*IDE_GetPopupObject)(char **ObjectType, char **ObjectOwner, char **ObjectName, char **SubObject);
+    delegate int IdeGetPopupObject(out string objectType, out string objectOwner, out string objectName, out string subObject);
 
     public class PlsqlDeveloperUtPlsqlPlugin
     {
         private const string PLUGIN_NAME = "utPLSQL Plugin";
-        private const int PLUGIN_MENU_INDEX = 72;
+        private const int PLUGIN_POPUP_INDEX = 1;
 
         private static PlsqlDeveloperUtPlsqlPlugin plugin;
-        private int pluginId;
 
-        //TODO: declare private delegate variable (not necessarilly static), for instance
-        //private static IdeCreateWindow createWindowCallback;
+        private static IdeCreatePopupItem createPopupItem;
+        private static IdeGetPopupObject getPopupObject;
 
-        private PlsqlDeveloperUtPlsqlPlugin(int id)
-        {
-            pluginId = id;
-        }
+        private static int pluginId;
 
         #region DLL exported API
         [DllExport("IdentifyPlugIn", CallingConvention = CallingConvention.Cdecl)]
@@ -30,7 +28,8 @@ namespace PlsqlDeveloperUtPlsqlPlugin
         {
             if (plugin == null)
             {
-                plugin = new PlsqlDeveloperUtPlsqlPlugin(id);
+                plugin = new PlsqlDeveloperUtPlsqlPlugin();
+                pluginId = id;
             }
             return PLUGIN_NAME;
         }
@@ -38,38 +37,38 @@ namespace PlsqlDeveloperUtPlsqlPlugin
         [DllExport("RegisterCallback", CallingConvention = CallingConvention.Cdecl)]
         public static void RegisterCallback(int index, IntPtr function)
         {
-            //TODO: register pointers to PL/SQL Developer callbacks you need, for instance
-            //createWindowCallback = (IdeCreateWindow)Marshal.GetDelegateForFunctionPointer(function, typeof(IdeCreateWindow));
+            if (index == 69)
+            {
+                createPopupItem = (IdeCreatePopupItem)Marshal.GetDelegateForFunctionPointer(function, typeof(IdeCreatePopupItem));
+            }
+            else if (index == 74)
+            {
+                getPopupObject = (IdeGetPopupObject)Marshal.GetDelegateForFunctionPointer(function, typeof(IdeGetPopupObject));
+            }
+        }
+
+
+        [DllExport("OnActivate", CallingConvention = CallingConvention.Cdecl)]
+        public static void OnActivate()
+        {
+            createPopupItem(pluginId, PLUGIN_POPUP_INDEX, "Run utPLSQL Test", "PACKAGE+");
+            createPopupItem(pluginId, PLUGIN_POPUP_INDEX, "Run utPLSQL Test", "PACKAGE BODY+");
         }
 
         [DllExport("OnMenuClick", CallingConvention = CallingConvention.Cdecl)]
         public static void OnMenuClick(int index)
         {
-            if (index == PLUGIN_MENU_INDEX)
+            if (index == PLUGIN_POPUP_INDEX)
             {
+                string type = "";
+                string owner = "";
+                string name = "";
+                string subType = "";
+                getPopupObject(out type, out owner, out name, out subType);
+
                 About about = new About();
-                about.Show(plugin);
+                about.Show(plugin, "Pop up " + type + " " + owner + " " + name + " " + subType);
             }
-        }
-
-        [DllExport("CreateMenuItem", CallingConvention = CallingConvention.Cdecl)]
-        public static string CreateMenuItem(int index)
-        {
-            if (index == PLUGIN_MENU_INDEX)
-            {
-                return "Tools / utPLSQL";
-            }
-            else
-            {
-                return "";
-            }
-        }
-
-        [DllExport("About", CallingConvention = CallingConvention.Cdecl)]
-        public static string About()
-        {
-            //TODO: create about dialog
-            return "utPLSQL Plugin";
         }
         #endregion
     }
