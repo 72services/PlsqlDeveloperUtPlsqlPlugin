@@ -3,6 +3,9 @@ using RGiesecke.DllExport;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using System.Drawing;
+using System.Reflection;
+using System.IO;
 
 namespace PlsqlDeveloperUtPlsqlPlugin
 {
@@ -27,7 +30,7 @@ namespace PlsqlDeveloperUtPlsqlPlugin
     //*FUNC: 74*/ int (*IDE_GetPopupObject)(char **ObjectType, char **ObjectOwner, char **ObjectName, char **SubObject);
     delegate int IdeGetPopupObject(out IntPtr objectType, out IntPtr objectOwner, out IntPtr objectName, out IntPtr subObject);
     //*FUNC: 150*/ void (*IDE_CreateToolButton)(int ID, int Index, char *Name, char *BitmapFile, int BitmapHandle);
-    delegate void IdeCreateToolButton(int id, int index, string name, string bitmapFile, int bitmapHandle);
+    delegate void IdeCreateToolButton(int id, int index, string name, string bitmapFile, long bitmapHandle);
 
     public class PlsqlDeveloperUtPlsqlPlugin
     {
@@ -52,6 +55,7 @@ namespace PlsqlDeveloperUtPlsqlPlugin
 
         private static IdeCreatePopupItem createPopupItem;
         private static IdeGetPopupObject getPopupObject;
+        private static IdeCreateToolButton createToolButton;
 
         private static int pluginId;
 
@@ -99,6 +103,9 @@ namespace PlsqlDeveloperUtPlsqlPlugin
                 case 74:
                     getPopupObject = (IdeGetPopupObject)Marshal.GetDelegateForFunctionPointer(function, typeof(IdeGetPopupObject));
                     break;
+                case 150:
+                    createToolButton = (IdeCreateToolButton)Marshal.GetDelegateForFunctionPointer(function, typeof(IdeCreateToolButton));
+                    break;
             }
         }
 
@@ -123,6 +130,29 @@ namespace PlsqlDeveloperUtPlsqlPlugin
         [DllExport("OnActivate", CallingConvention = CallingConvention.Cdecl)]
         public static void OnActivate()
         {
+            try
+            {
+                // Two seperate streams are needed!
+                var assembly = Assembly.GetExecutingAssembly();
+                using (Stream stream = assembly.GetManifestResourceStream("PlsqlDeveloperUtPlsqlPlugin.utPLSQL.bmp"))
+                {
+                    Bitmap bm = new Bitmap(stream);
+                    IntPtr hBitmap = bm.GetHbitmap();
+
+                    createToolButton(pluginId, PLUGIN_MENU_INDEX_ALLTESTS, "utPLSQL", "utPLSQL.bmp", hBitmap.ToInt64());
+                }
+                using (Stream stream = assembly.GetManifestResourceStream("PlsqlDeveloperUtPlsqlPlugin.utPLSQL.bmp"))
+                {
+                    Bitmap bm = new Bitmap(stream);
+                    IntPtr hBitmap = bm.GetHbitmap();
+
+                    createToolButton(pluginId, PLUGIN_POPUP_INDEX, "utPLSQL", "utPLSQL.bmp", hBitmap.ToInt64());
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
             createPopupItem(pluginId, PLUGIN_POPUP_INDEX, "Run utPLSQL Test", "PACKAGE+");
             createPopupItem(pluginId, PLUGIN_POPUP_INDEX, "Run utPLSQL Test", "PACKAGE BODY+");
         }
