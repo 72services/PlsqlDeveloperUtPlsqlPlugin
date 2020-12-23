@@ -1,5 +1,8 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.IO;
+using System.Windows.Forms;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace PlsqlDeveloperUtPlsqlPlugin
 {
@@ -32,7 +35,7 @@ namespace PlsqlDeveloperUtPlsqlPlugin
                 txtQuery.Text = sql;
 
                 CenterToScreen();
-
+                
                 Show();
 
                 this.plugin.ExecuteSql(sql);
@@ -41,6 +44,11 @@ namespace PlsqlDeveloperUtPlsqlPlugin
 
                 XDocument document = XDocument.Parse(result);
                 txtResult.Text = document.ToString();
+
+                XmlSerializer serializer = new XmlSerializer(typeof(TestSuites));
+                TestSuites testSuites = (TestSuites)serializer.Deserialize(new StringReader(document.ToString()));
+
+                MessageBox.Show($"# Time : {testSuites.Time}");
             }
             else
             {
