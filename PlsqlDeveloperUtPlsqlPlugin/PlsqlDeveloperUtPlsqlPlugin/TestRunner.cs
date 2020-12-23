@@ -16,20 +16,37 @@ namespace PlsqlDeveloperUtPlsqlPlugin
         {
             this.plugin = plugin;
 
-            string sql = $"select * from table(ut.run('{owner}.{name}', ut_junit_reporter()))";
-            txtQuery.Text = sql;
+            string sql = null;
 
-            CenterToScreen();
+            if (owner != null && name != null)
+            {
+                sql = $"select * from table(ut.run('{owner}.{name}', ut_junit_reporter()))";
+            }
+            else if (owner != null)
+            {
+                sql = $"select * from table(ut.run('{owner}', ut_junit_reporter()))";
+            }
 
-            Show();
+            if (sql != null)
+            {
+                txtQuery.Text = sql;
 
-            this.plugin.ExecuteSql(sql);
+                CenterToScreen();
 
-            string result = this.plugin.GetResult();
+                Show();
 
-            XDocument document = XDocument.Parse(result);
+                this.plugin.ExecuteSql(sql);
 
-            txtResult.Text = document.ToString();
+                string result = this.plugin.GetResult();
+
+                XDocument document = XDocument.Parse(result);
+                txtResult.Text = document.ToString();
+            }
+            else
+            {
+                txtQuery.Text = "";
+                txtResult.Text = "";
+            }
         }
 
         private void btnClose_Click(object sender, System.EventArgs e)
