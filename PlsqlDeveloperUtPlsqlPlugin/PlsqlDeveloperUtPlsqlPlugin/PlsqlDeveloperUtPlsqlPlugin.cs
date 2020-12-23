@@ -8,7 +8,7 @@ namespace PlsqlDeveloperUtPlsqlPlugin
     // /*FUNC: 69*/ void *(*IDE_CreatePopupItem)(int ID, int Index, char *Name, char *ObjectType);
     delegate void IdeCreatePopupItem(int id, int index, string name, string objectType);
     // /*FUNC: 74*/ int (*IDE_GetPopupObject)(char **ObjectType, char **ObjectOwner, char **ObjectName, char **SubObject);
-    delegate int IdeGetPopupObject(out string objectType, out string objectOwner, out string objectName, out string subObject);
+    delegate int IdeGetPopupObject(out IntPtr objectType, out IntPtr objectOwner, out IntPtr objectName, out IntPtr subObject);
 
     public class PlsqlDeveloperUtPlsqlPlugin
     {
@@ -60,14 +60,19 @@ namespace PlsqlDeveloperUtPlsqlPlugin
         {
             if (index == PLUGIN_POPUP_INDEX)
             {
-                string type = "";
-                string owner = "";
-                string name = "";
-                string subType = "";
+                IntPtr type ;
+                IntPtr owner;
+                IntPtr name;
+                IntPtr subType;
                 getPopupObject(out type, out owner, out name, out subType);
 
                 About about = new About();
-                about.Show(plugin, "Pop up " + type + " " + owner + " " + name + " " + subType);
+                about.Show(plugin, 
+                    "Pop up " + 
+                    Marshal.PtrToStringAnsi(type) + " " +
+                    Marshal.PtrToStringAnsi(owner) + " " +
+                    Marshal.PtrToStringAnsi(name) + " " +
+                    Marshal.PtrToStringAnsi(subType));
             }
         }
         #endregion
