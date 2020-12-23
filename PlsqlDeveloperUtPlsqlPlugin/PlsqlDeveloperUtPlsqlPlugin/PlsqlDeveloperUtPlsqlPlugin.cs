@@ -37,7 +37,6 @@ namespace PlsqlDeveloperUtPlsqlPlugin
         private const string PLUGIN_NAME = "utPLSQL Plugin";
 
         private const int PLUGIN_MENU_INDEX_ALLTESTS = 3;
-        private const int PLUGIN_MENU_INDEX_ABOUT = 4;
         private const int PLUGIN_POPUP_INDEX = 1;
 
         private const string ABOUT_TEXT = "utPLSQL Plugin for PL/SQL Developer \r\nby Simon Martinelli, 72® Services LLC";
@@ -120,8 +119,6 @@ namespace PlsqlDeveloperUtPlsqlPlugin
                     return "GROUP=utPLSQL";
                 case PLUGIN_MENU_INDEX_ALLTESTS:
                     return "LARGEITEM=Run all tests of current user";
-                case PLUGIN_MENU_INDEX_ABOUT:
-                    return "LARGEITEM=About";
                 default:
                     return "";
             }
@@ -187,16 +184,13 @@ namespace PlsqlDeveloperUtPlsqlPlugin
                     testRunner.Show(plugin, Marshal.PtrToStringAnsi(type), Marshal.PtrToStringAnsi(owner), Marshal.PtrToStringAnsi(name), Marshal.PtrToStringAnsi(subType));
                 }
             }
-            else if (index == PLUGIN_MENU_INDEX_ABOUT)
-            {
-                MessageBox.Show(ABOUT_TEXT);
-            }
         }
 
         [DllExport("About", CallingConvention = CallingConvention.Cdecl)]
         public static string About()
         {
-            return ABOUT_TEXT;
+            MessageBox.Show(ABOUT_TEXT);
+            return "";
         }
         #endregion
 

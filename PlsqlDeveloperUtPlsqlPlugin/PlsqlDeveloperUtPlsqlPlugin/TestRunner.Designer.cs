@@ -29,6 +29,7 @@ namespace PlsqlDeveloperUtPlsqlPlugin
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestRunner));
             this.lblQuery = new System.Windows.Forms.Label();
             this.txtQuery = new System.Windows.Forms.TextBox();
             this.lblResult = new System.Windows.Forms.Label();
@@ -99,6 +100,7 @@ namespace PlsqlDeveloperUtPlsqlPlugin
             this.Controls.Add(this.lblResult);
             this.Controls.Add(this.txtQuery);
             this.Controls.Add(this.lblQuery);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TestRunner";
             this.Text = "utPLSQL TestRunner";
             this.ResumeLayout(false);
