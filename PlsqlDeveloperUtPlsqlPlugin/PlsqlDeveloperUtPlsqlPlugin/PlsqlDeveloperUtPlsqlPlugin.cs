@@ -1,7 +1,6 @@
 ﻿using System;
 using RGiesecke.DllExport;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Reflection;
@@ -57,6 +56,13 @@ namespace PlsqlDeveloperUtPlsqlPlugin
         internal static IdeCreateToolButton createToolButton;
 
         internal static int pluginId;
+
+        private static TestRunner testRunner;
+
+        private PlsqlDeveloperUtPlsqlPlugin()
+        {
+            testRunner = new TestRunner();
+        }
 
         #region DLL exported API
         [DllExport("IdentifyPlugIn", CallingConvention = CallingConvention.Cdecl)]
@@ -160,7 +166,6 @@ namespace PlsqlDeveloperUtPlsqlPlugin
                     IntPtr database;
                     getConnectionInfo(out username, out password, out database);
 
-                    var testRunner = new TestRunner();
                     testRunner.Run("_ALL", Marshal.PtrToStringAnsi(username), null, null);
                 }
             }
@@ -174,7 +179,6 @@ namespace PlsqlDeveloperUtPlsqlPlugin
                     IntPtr subType;
                     getPopupObject(out type, out owner, out name, out subType);
 
-                    var testRunner = new TestRunner();
                     testRunner.Run(Marshal.PtrToStringAnsi(type), Marshal.PtrToStringAnsi(owner), Marshal.PtrToStringAnsi(name), Marshal.PtrToStringAnsi(subType));
                 }
             }

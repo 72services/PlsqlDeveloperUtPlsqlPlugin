@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace PlsqlDeveloperUtPlsqlPlugin
@@ -23,7 +21,10 @@ namespace PlsqlDeveloperUtPlsqlPlugin
 
             if (result != null)
             {
-                CenterToScreen();
+                if (WindowState == FormWindowState.Minimized)
+                {
+                    WindowState = FormWindowState.Normal;
+                }
                 Show();
 
                 var serializer = new XmlSerializer(typeof(TestSuites));
@@ -63,8 +64,16 @@ namespace PlsqlDeveloperUtPlsqlPlugin
 
         private void btnClose_Click(object sender, System.EventArgs e)
         {
-            Close();
+            Hide();
         }
 
+        private void TestResultWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+                Hide();
+            }
+        }
     }
 }

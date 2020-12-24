@@ -1,12 +1,13 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace PlsqlDeveloperUtPlsqlPlugin
 {
     class TestRunner
     {
+        private TestResultWindow testResultWindow;
+
         internal void Run(string type, string owner, string name, string subType)
         {
             string sql = null;
@@ -30,7 +31,11 @@ namespace PlsqlDeveloperUtPlsqlPlugin
 
                 var result = GetResult();
 
-                new TestResultWindow().Show(result);
+                if (testResultWindow == null)
+                {
+                    testResultWindow = new TestResultWindow();
+                }
+                testResultWindow.Show(result);
             }
         }
 
