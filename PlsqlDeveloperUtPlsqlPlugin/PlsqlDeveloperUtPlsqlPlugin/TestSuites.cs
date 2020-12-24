@@ -8,31 +8,31 @@ namespace PlsqlDeveloperUtPlsqlPlugin
     {
         [XmlAttribute("tests")]
         public int Tests { get; set; }
-        
+
         [XmlAttribute("disabled")]
         public int Disabled { get; set; }
-        
+
         [XmlAttribute("errors")]
         public int Errros { get; set; }
-        
+
         [XmlAttribute("failures")]
         public int Failures { get; set; }
-        
+
         [XmlAttribute("name")]
         public string Name { get; set; }
-        
+
         [XmlAttribute("time")]
         public string Time { get; set; }
-        
+
         [XmlElement("testsuite")]
         public TestSuite TestSuite { get; set; }
     }
 
     public class TestSuite
     {
-        [XmlAttribute("tests")] 
+        [XmlAttribute("tests")]
         public int Tests { get; set; }
-        
+
         [XmlAttribute("id")]
         public string Id { get; set; }
 
@@ -47,16 +47,16 @@ namespace PlsqlDeveloperUtPlsqlPlugin
 
         [XmlAttribute("failures")]
         public int Failures { get; set; }
-        
+
         [XmlAttribute("name")]
         public string Name { get; set; }
 
-        [XmlAttribute("time")] 
+        [XmlAttribute("time")]
         public string Time { get; set; }
 
         [XmlElement("testsuite")]
         public List<TestSuite> TestSuites { get; set; }
-        
+
         [XmlElement("testcase")]
         public List<TestCase> TestCases { get; set; }
     }
@@ -73,5 +73,11 @@ namespace PlsqlDeveloperUtPlsqlPlugin
 
         [XmlAttribute("time")]
         public string Time { get; set; }
+        
+        [XmlAttribute("status")]
+        public string Status { get; set; }
+
+        [XmlElement("error")]
+        public string Error { get; set; }
     }
 }

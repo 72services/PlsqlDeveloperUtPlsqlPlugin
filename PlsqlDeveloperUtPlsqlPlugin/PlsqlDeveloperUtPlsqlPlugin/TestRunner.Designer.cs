@@ -30,59 +30,18 @@ namespace PlsqlDeveloperUtPlsqlPlugin
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestRunner));
-            this.lblQuery = new System.Windows.Forms.Label();
-            this.txtQuery = new System.Windows.Forms.TextBox();
-            this.lblResult = new System.Windows.Forms.Label();
-            this.txtResult = new System.Windows.Forms.TextBox();
             this.btnClose = new System.Windows.Forms.Button();
+            this.treeResult = new System.Windows.Forms.TreeView();
+            this.lblTests = new System.Windows.Forms.Label();
+            this.txtTests = new System.Windows.Forms.TextBox();
+            this.lblTime = new System.Windows.Forms.Label();
+            this.txtTime = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
-            // 
-            // lblQuery
-            // 
-            this.lblQuery.AutoSize = true;
-            this.lblQuery.Location = new System.Drawing.Point(12, 9);
-            this.lblQuery.Name = "lblQuery";
-            this.lblQuery.Size = new System.Drawing.Size(35, 13);
-            this.lblQuery.TabIndex = 0;
-            this.lblQuery.Text = "Query";
-            // 
-            // txtQuery
-            // 
-            this.txtQuery.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtQuery.Location = new System.Drawing.Point(12, 25);
-            this.txtQuery.Name = "txtQuery";
-            this.txtQuery.ReadOnly = true;
-            this.txtQuery.Size = new System.Drawing.Size(617, 20);
-            this.txtQuery.TabIndex = 1;
-            // 
-            // lblResult
-            // 
-            this.lblResult.AutoSize = true;
-            this.lblResult.Location = new System.Drawing.Point(12, 60);
-            this.lblResult.Name = "lblResult";
-            this.lblResult.Size = new System.Drawing.Size(37, 13);
-            this.lblResult.TabIndex = 2;
-            this.lblResult.Text = "Result";
-            // 
-            // txtResult
-            // 
-            this.txtResult.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtResult.Location = new System.Drawing.Point(12, 76);
-            this.txtResult.Multiline = true;
-            this.txtResult.Name = "txtResult";
-            this.txtResult.ReadOnly = true;
-            this.txtResult.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtResult.Size = new System.Drawing.Size(617, 577);
-            this.txtResult.TabIndex = 3;
             // 
             // btnClose
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnClose.Location = new System.Drawing.Point(12, 661);
+            this.btnClose.Location = new System.Drawing.Point(12, 696);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 21);
             this.btnClose.TabIndex = 4;
@@ -90,16 +49,61 @@ namespace PlsqlDeveloperUtPlsqlPlugin
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
+            // treeResult
+            // 
+            this.treeResult.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeResult.Location = new System.Drawing.Point(12, 32);
+            this.treeResult.Name = "treeResult";
+            this.treeResult.Size = new System.Drawing.Size(986, 658);
+            this.treeResult.TabIndex = 5;
+            // 
+            // lblTests
+            // 
+            this.lblTests.AutoSize = true;
+            this.lblTests.Location = new System.Drawing.Point(12, 9);
+            this.lblTests.Name = "lblTests";
+            this.lblTests.Size = new System.Drawing.Size(33, 13);
+            this.lblTests.TabIndex = 6;
+            this.lblTests.Text = "Tests";
+            // 
+            // txtTests
+            // 
+            this.txtTests.Location = new System.Drawing.Point(51, 6);
+            this.txtTests.Name = "txtTests";
+            this.txtTests.ReadOnly = true;
+            this.txtTests.Size = new System.Drawing.Size(100, 20);
+            this.txtTests.TabIndex = 7;
+            // 
+            // lblTime
+            // 
+            this.lblTime.AutoSize = true;
+            this.lblTime.Location = new System.Drawing.Point(197, 9);
+            this.lblTime.Name = "lblTime";
+            this.lblTime.Size = new System.Drawing.Size(30, 13);
+            this.lblTime.TabIndex = 8;
+            this.lblTime.Text = "Time";
+            // 
+            // txtTime
+            // 
+            this.txtTime.Location = new System.Drawing.Point(233, 6);
+            this.txtTime.Name = "txtTime";
+            this.txtTime.ReadOnly = true;
+            this.txtTime.Size = new System.Drawing.Size(100, 20);
+            this.txtTime.TabIndex = 9;
+            // 
             // TestRunner
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(639, 694);
+            this.ClientSize = new System.Drawing.Size(1008, 729);
+            this.Controls.Add(this.txtTime);
+            this.Controls.Add(this.lblTime);
+            this.Controls.Add(this.txtTests);
+            this.Controls.Add(this.lblTests);
+            this.Controls.Add(this.treeResult);
             this.Controls.Add(this.btnClose);
-            this.Controls.Add(this.txtResult);
-            this.Controls.Add(this.lblResult);
-            this.Controls.Add(this.txtQuery);
-            this.Controls.Add(this.lblQuery);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TestRunner";
             this.Text = "utPLSQL TestRunner";
@@ -109,11 +113,11 @@ namespace PlsqlDeveloperUtPlsqlPlugin
         }
 
         #endregion
-
-        private System.Windows.Forms.Label lblQuery;
-        private System.Windows.Forms.TextBox txtQuery;
-        private System.Windows.Forms.Label lblResult;
-        private System.Windows.Forms.TextBox txtResult;
         private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.TreeView treeResult;
+        private System.Windows.Forms.Label lblTests;
+        private System.Windows.Forms.TextBox txtTests;
+        private System.Windows.Forms.Label lblTime;
+        private System.Windows.Forms.TextBox txtTime;
     }
 }

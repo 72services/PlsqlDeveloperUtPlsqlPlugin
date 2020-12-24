@@ -133,25 +133,19 @@ namespace PlsqlDeveloperUtPlsqlPlugin
                 var assembly = Assembly.GetExecutingAssembly();
                 using (Stream stream = assembly.GetManifestResourceStream("PlsqlDeveloperUtPlsqlPlugin.utPLSQL.bmp"))
                 {
-                    Bitmap bm = new Bitmap(stream);
-                    IntPtr hBitmap = bm.GetHbitmap();
-
-                    createToolButton(pluginId, PLUGIN_MENU_INDEX_ALLTESTS, "utPLSQL", "utPLSQL.bmp", hBitmap.ToInt64());
+                    createToolButton(pluginId, PLUGIN_MENU_INDEX_ALLTESTS, "utPLSQL", "utPLSQL.bmp", new Bitmap(stream).GetHbitmap().ToInt64());
                 }
                 using (Stream stream = assembly.GetManifestResourceStream("PlsqlDeveloperUtPlsqlPlugin.utPLSQL.bmp"))
                 {
-                    Bitmap bm = new Bitmap(stream);
-                    IntPtr hBitmap = bm.GetHbitmap();
-
-                    createToolButton(pluginId, PLUGIN_POPUP_INDEX, "utPLSQL", "utPLSQL.bmp", hBitmap.ToInt64());
+                    createToolButton(pluginId, PLUGIN_POPUP_INDEX, "utPLSQL", "utPLSQL.bmp", new Bitmap(stream).GetHbitmap().ToInt64());
                 }
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
             }
-            createPopupItem(pluginId, PLUGIN_POPUP_INDEX, "Run utPLSQL Test", "PACKAGE+");
-            createPopupItem(pluginId, PLUGIN_POPUP_INDEX, "Run utPLSQL Test", "PACKAGE BODY+");
+            createPopupItem(pluginId, PLUGIN_POPUP_INDEX, "Run utPLSQL Test", "USER");
+            createPopupItem(pluginId, PLUGIN_POPUP_INDEX, "Run utPLSQL Test", "PACKAGE");
         }
 
         [DllExport("OnMenuClick", CallingConvention = CallingConvention.Cdecl)]
@@ -166,8 +160,8 @@ namespace PlsqlDeveloperUtPlsqlPlugin
                     IntPtr database;
                     getConnectionInfo(out username, out password, out database);
 
-                    TestRunner testRunner = new TestRunner();
-                    testRunner.Show(plugin, null, Marshal.PtrToStringAnsi(username), null, null);
+                    var testRunner = new TestRunner();
+                    testRunner.Show(plugin, "_ALL", Marshal.PtrToStringAnsi(username), null, null);
                 }
             }
             else if (index == PLUGIN_POPUP_INDEX)
@@ -180,7 +174,7 @@ namespace PlsqlDeveloperUtPlsqlPlugin
                     IntPtr subType;
                     getPopupObject(out type, out owner, out name, out subType);
 
-                    TestRunner testRunner = new TestRunner();
+                    var testRunner = new TestRunner();
                     testRunner.Show(plugin, Marshal.PtrToStringAnsi(type), Marshal.PtrToStringAnsi(owner), Marshal.PtrToStringAnsi(name), Marshal.PtrToStringAnsi(subType));
                 }
             }
@@ -199,7 +193,7 @@ namespace PlsqlDeveloperUtPlsqlPlugin
             int code = sqlExecute(sql);
             if (code != 0)
             {
-                IntPtr message = sqlErrorMessage();
+                var message = sqlErrorMessage();
                 MessageBox.Show(Marshal.PtrToStringAnsi(message));
             }
         }
@@ -209,10 +203,9 @@ namespace PlsqlDeveloperUtPlsqlPlugin
             StringBuilder sb = new StringBuilder();
             while (!sqlEof())
             {
-                IntPtr value = sqlField(0);
+                var value = sqlField(0);
 
-                string converteredValue = Marshal.PtrToStringAnsi(value);
-
+                var converteredValue = Marshal.PtrToStringAnsi(value);
                 sb.Append(converteredValue).Append("\r\n");
 
                 sqlNext();
