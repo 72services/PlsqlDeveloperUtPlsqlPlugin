@@ -10,27 +10,27 @@ using System.IO;
 namespace PlsqlDeveloperUtPlsqlPlugin
 {
     //*FUNC: 11*/ BOOL (*IDE_Connected)();
-    delegate bool IdeConnected();
+    public delegate bool IdeConnected();
     //*FUNC: 12*/ void (*IDE_GetConnectionInfo)(char **Username, char **Password, char **Database);
-    delegate void IdeGetConnectionInfo(out IntPtr username, out IntPtr password, out IntPtr database);
+    public delegate void IdeGetConnectionInfo(out IntPtr username, out IntPtr password, out IntPtr database);
 
     //*FUNC: 40*/ int (*SQL_Execute)(char *SQL);
-    delegate int SqlExecute(string sql);
+    public delegate int SqlExecute(string sql);
     //*FUNC: 42*/ BOOL (*SQL_Eof)();
-    delegate bool SqlEof();
+    public delegate bool SqlEof();
     //*FUNC: 43*/ int (*SQL_Next)();
-    delegate int SqlNext();
+    public delegate int SqlNext();
     //*FUNC: 44*/ char *(*SQL_Field)(int Field);
-    delegate IntPtr SqlField(int field);
+    public delegate IntPtr SqlField(int field);
     //*FUNC: 48*/ char *(*SQL_ErrorMessage)();
-    delegate IntPtr SqlErrorMessage();
+    public delegate IntPtr SqlErrorMessage();
 
     //*FUNC: 69*/ void *(*IDE_CreatePopupItem)(int ID, int Index, char *Name, char *ObjectType);
-    delegate void IdeCreatePopupItem(int id, int index, string name, string objectType);
+    public delegate void IdeCreatePopupItem(int id, int index, string name, string objectType);
     //*FUNC: 74*/ int (*IDE_GetPopupObject)(char **ObjectType, char **ObjectOwner, char **ObjectName, char **SubObject);
-    delegate int IdeGetPopupObject(out IntPtr objectType, out IntPtr objectOwner, out IntPtr objectName, out IntPtr subObject);
+    public delegate int IdeGetPopupObject(out IntPtr objectType, out IntPtr objectOwner, out IntPtr objectName, out IntPtr subObject);
     //*FUNC: 150*/ void (*IDE_CreateToolButton)(int ID, int Index, char *Name, char *BitmapFile, int BitmapHandle);
-    delegate void IdeCreateToolButton(int id, int index, string name, string bitmapFile, long bitmapHandle);
+    public delegate void IdeCreateToolButton(int id, int index, string name, string bitmapFile, long bitmapHandle);
 
     public class PlsqlDeveloperUtPlsqlPlugin
     {
@@ -43,20 +43,20 @@ namespace PlsqlDeveloperUtPlsqlPlugin
 
         private static PlsqlDeveloperUtPlsqlPlugin plugin;
 
-        private static IdeConnected connected;
-        private static IdeGetConnectionInfo getConnectionInfo;
+        public static IdeConnected connected;
+        public static IdeGetConnectionInfo getConnectionInfo;
 
-        private static SqlExecute sqlExecute;
-        private static SqlEof sqlEof;
-        private static SqlNext sqlNext;
-        private static SqlField sqlField;
-        private static SqlErrorMessage sqlErrorMessage;
+        public static SqlExecute sqlExecute;
+        public static SqlEof sqlEof;
+        public static SqlNext sqlNext;
+        public static SqlField sqlField;
+        public static SqlErrorMessage sqlErrorMessage;
 
-        private static IdeCreatePopupItem createPopupItem;
-        private static IdeGetPopupObject getPopupObject;
-        private static IdeCreateToolButton createToolButton;
+        public static IdeCreatePopupItem createPopupItem;
+        public static IdeGetPopupObject getPopupObject;
+        public static IdeCreateToolButton createToolButton;
 
-        private static int pluginId;
+        public static int pluginId;
 
         #region DLL exported API
         [DllExport("IdentifyPlugIn", CallingConvention = CallingConvention.Cdecl)]
@@ -153,7 +153,7 @@ namespace PlsqlDeveloperUtPlsqlPlugin
         {
             if (index == PLUGIN_MENU_INDEX_ALLTESTS)
             {
-                if (connected())
+                if (PlsqlDeveloperUtPlsqlPlugin.connected())
                 {
                     IntPtr username;
                     IntPtr password;
@@ -161,12 +161,12 @@ namespace PlsqlDeveloperUtPlsqlPlugin
                     getConnectionInfo(out username, out password, out database);
 
                     var testRunner = new TestRunner();
-                    testRunner.Show(plugin, "_ALL", Marshal.PtrToStringAnsi(username), null, null);
+                    testRunner.Run("_ALL", Marshal.PtrToStringAnsi(username), null, null);
                 }
             }
             else if (index == PLUGIN_POPUP_INDEX)
             {
-                if (connected())
+                if (PlsqlDeveloperUtPlsqlPlugin.connected())
                 {
                     IntPtr type;
                     IntPtr owner;
@@ -175,7 +175,7 @@ namespace PlsqlDeveloperUtPlsqlPlugin
                     getPopupObject(out type, out owner, out name, out subType);
 
                     var testRunner = new TestRunner();
-                    testRunner.Show(plugin, Marshal.PtrToStringAnsi(type), Marshal.PtrToStringAnsi(owner), Marshal.PtrToStringAnsi(name), Marshal.PtrToStringAnsi(subType));
+                    testRunner.Run(Marshal.PtrToStringAnsi(type), Marshal.PtrToStringAnsi(owner), Marshal.PtrToStringAnsi(name), Marshal.PtrToStringAnsi(subType));
                 }
             }
         }
@@ -187,30 +187,5 @@ namespace PlsqlDeveloperUtPlsqlPlugin
             return "";
         }
         #endregion
-
-        public void ExecuteSql(string sql)
-        {
-            int code = sqlExecute(sql);
-            if (code != 0)
-            {
-                var message = sqlErrorMessage();
-                MessageBox.Show(Marshal.PtrToStringAnsi(message));
-            }
-        }
-
-        public string GetResult()
-        {
-            StringBuilder sb = new StringBuilder();
-            while (!sqlEof())
-            {
-                var value = sqlField(0);
-
-                var converteredValue = Marshal.PtrToStringAnsi(value);
-                sb.Append(converteredValue).Append("\r\n");
-
-                sqlNext();
-            }
-            return sb.ToString();
-        }
     }
 }
