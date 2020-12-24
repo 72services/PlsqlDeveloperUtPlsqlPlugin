@@ -10,27 +10,27 @@ using System.IO;
 namespace PlsqlDeveloperUtPlsqlPlugin
 {
     //*FUNC: 11*/ BOOL (*IDE_Connected)();
-    public delegate bool IdeConnected();
+    internal delegate bool IdeConnected();
     //*FUNC: 12*/ void (*IDE_GetConnectionInfo)(char **Username, char **Password, char **Database);
-    public delegate void IdeGetConnectionInfo(out IntPtr username, out IntPtr password, out IntPtr database);
+    internal delegate void IdeGetConnectionInfo(out IntPtr username, out IntPtr password, out IntPtr database);
 
     //*FUNC: 40*/ int (*SQL_Execute)(char *SQL);
-    public delegate int SqlExecute(string sql);
+    internal delegate int SqlExecute(string sql);
     //*FUNC: 42*/ BOOL (*SQL_Eof)();
-    public delegate bool SqlEof();
+    internal delegate bool SqlEof();
     //*FUNC: 43*/ int (*SQL_Next)();
-    public delegate int SqlNext();
+    internal delegate int SqlNext();
     //*FUNC: 44*/ char *(*SQL_Field)(int Field);
-    public delegate IntPtr SqlField(int field);
+    internal delegate IntPtr SqlField(int field);
     //*FUNC: 48*/ char *(*SQL_ErrorMessage)();
-    public delegate IntPtr SqlErrorMessage();
+    internal delegate IntPtr SqlErrorMessage();
 
     //*FUNC: 69*/ void *(*IDE_CreatePopupItem)(int ID, int Index, char *Name, char *ObjectType);
-    public delegate void IdeCreatePopupItem(int id, int index, string name, string objectType);
+    internal delegate void IdeCreatePopupItem(int id, int index, string name, string objectType);
     //*FUNC: 74*/ int (*IDE_GetPopupObject)(char **ObjectType, char **ObjectOwner, char **ObjectName, char **SubObject);
-    public delegate int IdeGetPopupObject(out IntPtr objectType, out IntPtr objectOwner, out IntPtr objectName, out IntPtr subObject);
+    internal delegate int IdeGetPopupObject(out IntPtr objectType, out IntPtr objectOwner, out IntPtr objectName, out IntPtr subObject);
     //*FUNC: 150*/ void (*IDE_CreateToolButton)(int ID, int Index, char *Name, char *BitmapFile, int BitmapHandle);
-    public delegate void IdeCreateToolButton(int id, int index, string name, string bitmapFile, long bitmapHandle);
+    internal delegate void IdeCreateToolButton(int id, int index, string name, string bitmapFile, long bitmapHandle);
 
     public class PlsqlDeveloperUtPlsqlPlugin
     {
@@ -43,20 +43,20 @@ namespace PlsqlDeveloperUtPlsqlPlugin
 
         private static PlsqlDeveloperUtPlsqlPlugin plugin;
 
-        public static IdeConnected connected;
-        public static IdeGetConnectionInfo getConnectionInfo;
+        internal static IdeConnected connected;
+        internal static IdeGetConnectionInfo getConnectionInfo;
 
-        public static SqlExecute sqlExecute;
-        public static SqlEof sqlEof;
-        public static SqlNext sqlNext;
-        public static SqlField sqlField;
-        public static SqlErrorMessage sqlErrorMessage;
+        internal static SqlExecute sqlExecute;
+        internal static SqlEof sqlEof;
+        internal static SqlNext sqlNext;
+        internal static SqlField sqlField;
+        internal static SqlErrorMessage sqlErrorMessage;
 
-        public static IdeCreatePopupItem createPopupItem;
-        public static IdeGetPopupObject getPopupObject;
-        public static IdeCreateToolButton createToolButton;
+        internal static IdeCreatePopupItem createPopupItem;
+        internal static IdeGetPopupObject getPopupObject;
+        internal static IdeCreateToolButton createToolButton;
 
-        public static int pluginId;
+        internal static int pluginId;
 
         #region DLL exported API
         [DllExport("IdentifyPlugIn", CallingConvention = CallingConvention.Cdecl)]

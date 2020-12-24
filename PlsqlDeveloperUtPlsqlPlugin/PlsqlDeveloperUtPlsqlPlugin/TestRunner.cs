@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace PlsqlDeveloperUtPlsqlPlugin
@@ -28,7 +29,7 @@ namespace PlsqlDeveloperUtPlsqlPlugin
                 ExecuteSql(sql);
 
                 var result = GetResult();
-                
+
                 new TestResultWindow().Show(result);
             }
         }
