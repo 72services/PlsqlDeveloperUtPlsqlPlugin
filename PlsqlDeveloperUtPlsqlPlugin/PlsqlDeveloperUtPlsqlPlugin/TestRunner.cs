@@ -31,7 +31,7 @@ namespace PlsqlDeveloperUtPlsqlPlugin
             }
         }
 
-        internal TestSuites GetJUnitResult()
+        internal JUnitTestSuites GetJUnitResult()
         {
             var sb = new StringBuilder();
             while (!PlsqlDeveloperUtPlsqlPlugin.sqlEof())
@@ -45,8 +45,8 @@ namespace PlsqlDeveloperUtPlsqlPlugin
             }
             var result = sb.ToString();
 
-            var serializer = new XmlSerializer(typeof(TestSuites));
-            var testSuites = (TestSuites)serializer.Deserialize(new StringReader(result));
+            var serializer = new XmlSerializer(typeof(JUnitTestSuites));
+            var testSuites = (JUnitTestSuites)serializer.Deserialize(new StringReader(result));
             return testSuites;
         }
 
