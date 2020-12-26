@@ -31,7 +31,7 @@ namespace PlsqlDeveloperUtPlsqlPlugin
             }
         }
 
-        internal TestSuites GetJunitResult()
+        internal TestSuites GetJUnitResult()
         {
             var sb = new StringBuilder();
             while (!PlsqlDeveloperUtPlsqlPlugin.sqlEof())

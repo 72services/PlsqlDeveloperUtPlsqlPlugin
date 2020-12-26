@@ -24,7 +24,7 @@ namespace PlsqlDeveloperUtPlsqlPlugin
             txtTime.Text = "";
             treeResult.Nodes.Clear();
 
-            var testSuites = testRunner.GetJunitResult();
+            var testSuites = testRunner.GetJUnitResult();
 
             if (testSuites != null)
             {
@@ -37,29 +37,29 @@ namespace PlsqlDeveloperUtPlsqlPlugin
                 txtTests.Text = "" + testSuites.Tests;
                 txtTime.Text = testSuites.Time;
 
-                var treeNodesTestSuites = new List<TreeNode>();
+                var root = new TreeNode($"{testSuites.TestSuite.Name} ({testSuites.TestSuite.Tests})");
                 foreach (TestSuite testSuite in testSuites.TestSuite.TestSuites)
                 {
-                    var treeNodesTestCases = new List<TreeNode>();
+                    TreeNode tnTestSuite = new TreeNode($"{testSuite.Name} ({testSuite.Tests})");
+                    root.Nodes.Add(tnTestSuite);
+
                     foreach (var testCase in testSuite.TestCases)
                     {
+                        var tnTestCase = new TreeNode($"{testCase.Name}");
+                        tnTestSuite.Nodes.Add(tnTestCase);
+
                         if (testCase.Error != null)
                         {
-                            TreeNode[] treeNodesError = { new TreeNode(testCase.Error) };
-                            var treeNodeTestCase = new TreeNode($"{testCase.Name}", treeNodesError);
-                            treeNodeTestCase.ForeColor = Color.DarkRed;
-                            treeNodesTestCases.Add(treeNodeTestCase);
+                            tnTestCase.ForeColor = Color.DarkRed;
+                            var tnError = new TreeNode(testCase.Error);
+                            tnTestCase.Nodes.Add(tnError);
                         }
                         else
                         {
-                            var treeNodeTestCase = new TreeNode($"{testCase.Name}");
-                            treeNodeTestCase.ForeColor = testCase.Status == null ? Color.DarkGreen : Color.DarkRed;
-                            treeNodesTestCases.Add(treeNodeTestCase);
+                            tnTestCase.ForeColor = testCase.Status == null ? Color.DarkGreen : Color.DarkRed;
                         }
                     }
-                    treeNodesTestSuites.Add(new TreeNode($"{testSuite.Name} ({testSuite.Tests})", treeNodesTestCases.ToArray()));
                 }
-                var root = new TreeNode($"{testSuites.TestSuite.Name} ({testSuites.TestSuite.Tests})", treeNodesTestSuites.ToArray());
 
                 treeResult.Nodes.Add(root);
                 treeResult.ExpandAll();
