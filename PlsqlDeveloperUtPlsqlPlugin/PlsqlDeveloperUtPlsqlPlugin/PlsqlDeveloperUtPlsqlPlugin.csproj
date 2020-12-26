@@ -77,7 +77,6 @@
   <ItemGroup>
     <Compile Include="JUnitTestSuites.cs" />
     <Compile Include="Reporter.cs" />
-    <Compile Include="TeamCityRecord.cs" />
     <Compile Include="TestResultWindow.cs">
       <SubType>Form</SubType>
     </Compile>
