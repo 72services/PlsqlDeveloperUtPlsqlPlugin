@@ -1,25 +1,32 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
-using System.Xml.Serialization;
 
 namespace PlsqlDeveloperUtPlsqlPlugin
 {
     public partial class TestResultWindow : Form
     {
+        private TestRunner testRunner = new TestRunner();
+
         public TestResultWindow()
         {
             InitializeComponent();
         }
 
-        internal void Show(string result)
+        internal void RunTests(string type, string owner, string name, string subType)
+        {
+            testRunner.Run(type, owner, name, subType, Reporter.JUNIT);
+            ShowResult();
+        }
+        private void ShowResult()
         {
             txtTests.Text = "";
             txtTime.Text = "";
             treeResult.Nodes.Clear();
 
-            if (result != null)
+            var testSuites = testRunner.GetJunitResult();
+
+            if (testSuites != null)
             {
                 if (WindowState == FormWindowState.Minimized)
                 {
@@ -27,16 +34,13 @@ namespace PlsqlDeveloperUtPlsqlPlugin
                 }
                 Show();
 
-                var serializer = new XmlSerializer(typeof(TestSuites));
-                var testSuites = (TestSuites)serializer.Deserialize(new StringReader(result));
-
                 txtTests.Text = "" + testSuites.Tests;
                 txtTime.Text = testSuites.Time;
 
                 var treeNodesTestSuites = new List<TreeNode>();
                 foreach (TestSuite testSuite in testSuites.TestSuite.TestSuites)
                 {
-                    List<TreeNode> treeNodesTestCases = new List<TreeNode>();
+                    var treeNodesTestCases = new List<TreeNode>();
                     foreach (var testCase in testSuite.TestCases)
                     {
                         if (testCase.Error != null)
@@ -75,5 +79,6 @@ namespace PlsqlDeveloperUtPlsqlPlugin
                 Hide();
             }
         }
+
     }
 }

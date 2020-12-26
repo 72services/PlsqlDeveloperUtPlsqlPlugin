@@ -57,11 +57,11 @@ namespace PlsqlDeveloperUtPlsqlPlugin
 
         internal static int pluginId;
 
-        private static TestRunner testRunner;
+        private static TestResultWindow testResultWindow ;
 
         private PlsqlDeveloperUtPlsqlPlugin()
         {
-            testRunner = new TestRunner();
+            testResultWindow = new TestResultWindow();
         }
 
         #region DLL exported API
@@ -166,7 +166,7 @@ namespace PlsqlDeveloperUtPlsqlPlugin
                     IntPtr database;
                     getConnectionInfo(out username, out password, out database);
 
-                    testRunner.Run("_ALL", Marshal.PtrToStringAnsi(username), null, null);
+                    testResultWindow.RunTests("_ALL", Marshal.PtrToStringAnsi(username), null, null);
                 }
             }
             else if (index == PLUGIN_POPUP_INDEX)
@@ -179,7 +179,7 @@ namespace PlsqlDeveloperUtPlsqlPlugin
                     IntPtr subType;
                     getPopupObject(out type, out owner, out name, out subType);
 
-                    testRunner.Run(Marshal.PtrToStringAnsi(type), Marshal.PtrToStringAnsi(owner), Marshal.PtrToStringAnsi(name), Marshal.PtrToStringAnsi(subType));
+                    testResultWindow.RunTests(Marshal.PtrToStringAnsi(type), Marshal.PtrToStringAnsi(owner), Marshal.PtrToStringAnsi(name), Marshal.PtrToStringAnsi(subType));
                 }
             }
         }

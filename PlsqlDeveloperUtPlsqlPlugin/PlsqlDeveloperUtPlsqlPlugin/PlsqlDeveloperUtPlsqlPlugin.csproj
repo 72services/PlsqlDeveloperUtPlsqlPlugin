@@ -75,6 +75,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Reporter.cs" />
     <Compile Include="TestResultWindow.cs">
       <SubType>Form</SubType>
     </Compile>
